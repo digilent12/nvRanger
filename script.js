@@ -141,14 +141,19 @@ let carouselInterval = null;
 // Load fan art from local images folder
 function fetchFanArt() {
     const carouselTrack = document.getElementById('carousel-track');
-    if (!carouselTrack) return;
+    if (!carouselTrack) {
+        console.error('Carousel track not found!');
+        return;
+    }
 
     // Use local images directly
     fanArtImages = LOCAL_FAN_ART;
+    console.log('Loading images:', fanArtImages);
     
     if (fanArtImages.length > 0) {
         displayCarousel();
     } else {
+        console.error('No fan art images found!');
         carouselTrack.innerHTML = `
             <div class="carousel-loading">
                 <p>No fan art images found.</p>
@@ -177,7 +182,17 @@ function displayCarousel() {
     const carouselTrack = document.getElementById('carousel-track');
     const carouselDots = document.getElementById('carousel-dots');
     
-    if (!carouselTrack || fanArtImages.length === 0) return;
+    if (!carouselTrack) {
+        console.error('Carousel track not found in displayCarousel!');
+        return;
+    }
+    
+    if (fanArtImages.length === 0) {
+        console.error('No images to display!');
+        return;
+    }
+    
+    console.log('Displaying carousel with', fanArtImages.length, 'images');
     
     // Clear existing content
     carouselTrack.innerHTML = '';
@@ -187,14 +202,32 @@ function displayCarousel() {
     fanArtImages.forEach((image, index) => {
         const slide = document.createElement('div');
         slide.className = 'carousel-slide';
-        slide.innerHTML = `
-            <a href="${image.permalink}" target="_blank" rel="noopener noreferrer" style="display: block; width: 100%; height: 100%;">
-                <img src="${image.url}" 
-                     alt="${image.title}" 
-                     loading="lazy"
-                     onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'800\' height=\'600\'%3E%3Crect fill=\'%231a1a1a\' width=\'800\' height=\'600\'/%3E%3Ctext fill=\'%23b3b3b3\' font-family=\'sans-serif\' font-size=\'20\' x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dominant-baseline=\'middle\'%3EImage not available%3C/text%3E%3C/svg%3E';">
-            </a>
-        `;
+        const img = document.createElement('img');
+        img.src = image.url;
+        img.alt = image.title;
+        img.style.width = '100%';
+        img.style.height = '100%';
+        img.style.objectFit = 'contain';
+        img.style.display = 'block';
+        
+        img.onerror = function() {
+            console.error('Failed to load image:', image.url);
+            this.style.display = 'none';
+        };
+        
+        img.onload = function() {
+            console.log('Image loaded successfully:', image.url);
+        };
+        
+        const link = document.createElement('a');
+        link.href = image.permalink;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.style.display = 'block';
+        link.style.width = '100%';
+        link.style.height = '100%';
+        link.appendChild(img);
+        slide.appendChild(link);
         carouselTrack.appendChild(slide);
         
         // Create dot
@@ -271,7 +304,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Initialize carousel buttons
 document.addEventListener('DOMContentLoaded', () => {
-    // Fetch fan art
+    // Fetch fan art immediately
+    console.log('DOM loaded, fetching fan art...');
     fetchFanArt();
     
     // Setup carousel navigation buttons
@@ -318,5 +352,88 @@ navLinks.forEach(link => {
         navLinks.forEach(l => l.classList.remove('active'));
         this.classList.add('active');
     });
+});
+
+// Lightbox functionality for fan art
+function initLightbox() {
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImage = document.getElementById('lightbox-image');
+    const lightboxTitle = document.getElementById('lightbox-title');
+    const lightboxClose = document.querySelector('.lightbox-close');
+    const fanartItems = document.querySelectorAll('.fanart-item');
+    
+    if (!lightbox || !lightboxImage) {
+        console.error('Lightbox elements not found!');
+        return;
+    }
+    
+    if (fanartItems.length === 0) {
+        console.error('No fan art items found!');
+        return;
+    }
+    
+    console.log('Lightbox initialized with', fanartItems.length, 'items');
+    
+    // Close lightbox function
+    function closeLightbox() {
+        if (lightbox) {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    }
+    
+    // Open lightbox when clicking on fan art
+    fanartItems.forEach((item) => {
+        item.style.cursor = 'pointer';
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const imageSrc = this.getAttribute('data-image');
+            const imageTitle = this.getAttribute('data-title');
+            
+            console.log('Click detected! Opening:', imageSrc);
+            
+            if (imageSrc) {
+                lightboxImage.src = imageSrc;
+                lightboxImage.alt = imageTitle || 'Fan Art';
+                if (lightboxTitle) {
+                    lightboxTitle.textContent = imageTitle || '';
+                }
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        });
+    });
+    
+    // Close on button click
+    if (lightboxClose) {
+        lightboxClose.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            closeLightbox();
+        });
+    }
+    
+    // Close on background click
+    if (lightbox) {
+        lightbox.addEventListener('click', function(e) {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+    }
+    
+    // Close on ESC key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && lightbox && lightbox.classList.contains('active')) {
+            closeLightbox();
+        }
+    });
+}
+
+// Initialize lightbox when DOM is ready
+window.addEventListener('load', function() {
+    setTimeout(initLightbox, 100);
 });
 
