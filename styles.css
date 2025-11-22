@@ -406,6 +406,10 @@ section {
     text-align: center;
     border: 1px solid var(--border-color);
     transition: all 0.3s ease;
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
 }
 
 .feature-card:hover {
@@ -413,6 +417,10 @@ section {
     background: var(--bg-card-hover);
     border-color: var(--neon-green);
     box-shadow: var(--glow-green), var(--shadow-lg);
+}
+
+.feature-card:visited {
+    color: inherit;
 }
 
 .feature-icon {
