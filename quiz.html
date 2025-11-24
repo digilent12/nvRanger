@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="How well do you know nvRanger? Take the quiz!">
+    <title>nvRanger Quiz - Official Fan Site</title>
+    <link rel="icon" type="image/jpeg" href="profile-photo.jpg">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .quiz-question {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-question:hover {
+            border-color: var(--neon-green);
+            box-shadow: var(--glow-green);
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .answer-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .answer-option {
+            background: var(--bg-dark);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-primary);
+            font-size: 1rem;
+            text-align: left;
+        }
+
+        .answer-option:hover {
+            border-color: var(--neon-green);
+            background: rgba(57, 255, 20, 0.1);
+            transform: translateX(5px);
+        }
+
+        .answer-option.selected {
+            border-color: var(--neon-green);
+            background: rgba(57, 255, 20, 0.2);
+            box-shadow: var(--glow-green);
+        }
+
+        .answer-option.correct {
+            border-color: var(--neon-green);
+            background: rgba(57, 255, 20, 0.3);
+            box-shadow: var(--glow-green);
+        }
+
+        .quiz-result {
+            text-align: center;
+            padding: 3rem;
+            background: var(--bg-card);
+            border: 2px solid var(--neon-green);
+            border-radius: 16px;
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .quiz-result.show {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .result-title {
+            font-size: 2rem;
+            color: var(--neon-green);
+            margin-bottom: 1rem;
+        }
+
+        .result-score {
+            font-size: 3rem;
+            font-weight: 800;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 1rem 0;
+        }
+
+        .result-message {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-top: 1rem;
+        }
+
+        .submit-btn {
+            display: block;
+            margin: 2rem auto;
+            padding: 1rem 3rem;
+            font-size: 1.2rem;
+            background: var(--neon-green);
+            color: var(--bg-dark);
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            box-shadow: var(--glow-green);
+            transform: translateY(-2px);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--neon-green);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: var(--blue);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h2><a href="index.html" style="text-decoration: none; color: inherit;">nvRanger</a></h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html#home" class="nav-link">Home</a></li>
+                <li><a href="index.html#about" class="nav-link">About</a></li>
+                <li><a href="index.html#memorial" class="nav-link">Memorial</a></li>
+                <li><a href="index.html#fanart" class="nav-link">Fan Art</a></li>
+                <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+                <li><a href="quiz.html" class="nav-link">Quiz</a></li>
+            </ul>
+            <button class="nav-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Quiz Section -->
+    <section class="quiz" style="padding-top: 100px; min-height: 100vh;">
+        <div class="container">
+            <div class="quiz-container">
+                <a href="index.html" class="back-link">← Back to Home</a>
+                
+                <div class="quiz-header">
+                    <h1 class="section-title">How Well Do You Know nvRanger?</h1>
+                    <p class="section-subtitle">Test your knowledge! (Spoiler: You're always right)</p>
+                </div>
+
+                <form id="quiz-form">
+                    <div class="quiz-question">
+                        <div class="question-text">1. What is nvRanger's favorite color?</div>
+                        <div class="answer-options">
+                            <label class="answer-option">
+                                <input type="radio" name="q1" value="green" style="display: none;">
+                                <span>Neon Green (obviously)</span>
+                            </label>
+                            <label class="answer-option">
+                                <input type="radio" name="q1" value="blue" style="display: none;">
+                                <span>Blue (the other one)</span>
+                            </label>
+                            <label class="answer-option">
+                                <input type="radio" name="q1" value="tan" style="display: none;">
+                                <span>Tan (the third one)</span>
+                            </label>
+                            <label class="answer-option">
+                                <input type="radio" name="q1" value="all" style="display: none;">
+                                <span>All of the above (they're all correct)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <div class="question-text">2. What happened to all the Family Guy content?</div>
+                        <div class="answer-options">
+                            <label class="answer-option">
+                                <input type="radio" name="q2" value="purge" style="display: none;">
+                                <span>The Great Purge of 2023</span>
+                            </label>
+                            <label class="answer-option">
+                                <input type="radio" name="q2" value="aliens" style="display: none;">
+                                <span>Aliens took it</span>
+                            </label>
+                            <label class="answer-option">
+                                <input type="radio" name="q2" value="peter" style="display: none;">
+                                <span>Peter Griffin ate it</span>
+                            </label>
+                            <label class="answer-option">
+                                <input type="radio" name="q2" value="yes" style="display: none;">
+                                <span>Yes</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <div class="question-text">3. How many subscribers does nvRanger have?</div>
+                        <div class="answer-options">
+                            <label class="answer-option">
+                                <input type="radio" name="q3" value="65k" style="display: none;">
+                                <span>65K+ (the real number)</span>
+                            </label>
+                            <label class="answer-option">
+                                <input type="radio" name="q3" value="million" style="display: none;">
+                                <span>1 million (we can dream)</span>
+                            </label>
+                            <label class="answer-option">
+                                <input type="radio" name="q3" value="infinity" style="display: none;">
+                                <span>Infinity (mathematically correct)</span>
+                            </label>
+                            <label class="answer-option">
+                                <input type="radio" name="q3" value="all" style="display: none;">
+                                <span>All of the above (they're all valid)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <div class="question-text">4. What is nvRanger's Reddit community called?</div>
+                        <div class="answer-options">
+                            <label class="answer-option">
+                                <input type="radio" name="q4" value="redranger" style="display: none;">
+                                <span>r/RedRangerYT</span>
+                            </label>
+                            <label class="answer-option">
+                                <input type="radio" name="q4" value="nvranger" style="display: none;">
+                                <span>r/nvRanger</span>
+                            </label>
+                            <label class="answer-option">
+                                <input type="radio" name="q4" value="peter" style="display: none;">
+                                <span>r/PeterGriffinFanClub</span>
+                            </label>
+                            <label class="answer-option">
+                                <input type="radio" name="q4" value="yes" style="display: none;">
+                                <span>Yes</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <div class="question-text">5. What type of content does nvRanger create?</div>
+                        <div class="answer-options">
+                            <label class="answer-option">
+                                <input type="radio" name="q5" value="gaming" style="display: none;">
+                                <span>Gaming content</span>
+                            </label>
+                            <label class="answer-option">
+                                <input type="radio" name="q5" value="cooking" style="display: none;">
+                                <span>Cooking shows</span>
+                            </label>
+                            <label class="answer-option">
+                                <input type="radio" name="q5" value="dance" style="display: none;">
+                                <span>Dance tutorials</span>
+                            </label>
+                            <label class="answer-option">
+                                <input type="radio" name="q5" value="all" style="display: none;">
+                                <span>All of the above (multitalented)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Submit Quiz</button>
+                </form>
+
+                <div class="quiz-result" id="quiz-result">
+                    <div class="result-title">🎉 Congratulations! 🎉</div>
+                    <div class="result-score" id="result-score">100%</div>
+                    <div class="result-message" id="result-message">
+                        You got all the answers correct! You're a true nvRanger expert! 
+                        (But let's be honest, you were always going to get 100% anyway 😉)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>nvRanger</h3>
+                    <p>Gaming Content Creator</p>
+                </div>
+                <div class="footer-links">
+                    <a href="index.html#home">Home</a>
+                    <a href="index.html#about">About</a>
+                    <a href="index.html#fanart">Fan Art</a>
+                    <a href="index.html#contact">Contact</a>
+                    <a href="quiz.html">Quiz</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 nvRanger Official Fan Site. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Navigation Toggle
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        if (navToggle) {
+            navToggle.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+                navToggle.classList.toggle('active');
+            });
+        }
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                if (navToggle) navToggle.classList.remove('active');
+            });
+        });
+
+        // Quiz functionality - all answers are correct!
+        const quizForm = document.getElementById('quiz-form');
+        const answerOptions = document.querySelectorAll('.answer-option');
+        const quizResult = document.getElementById('quiz-result');
+
+        // Make all options clickable and mark as selected
+        answerOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                // Remove selected class from siblings
+                const siblings = this.parentElement.querySelectorAll('.answer-option');
+                siblings.forEach(sib => sib.classList.remove('selected'));
+                
+                // Add selected class to clicked option
+                this.classList.add('selected');
+                
+                // Check the radio button
+                const radio = this.querySelector('input[type="radio"]');
+                if (radio) radio.checked = true;
+            });
+        });
+
+        // Submit quiz
+        quizForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Mark all selected answers as correct
+            const selectedOptions = document.querySelectorAll('.answer-option.selected');
+            selectedOptions.forEach(option => {
+                option.classList.add('correct');
+            });
+
+            // Show result
+            quizResult.classList.add('show');
+            
+            // Scroll to result
+            quizResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            // Disable submit button
+            const submitBtn = document.querySelector('.submit-btn');
+            if (submitBtn) submitBtn.disabled = true;
+        });
+    </script>
+</body>
+</html>
+
