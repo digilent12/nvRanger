@@ -729,6 +729,31 @@ section {
 .contact-info {
     color: var(--text-secondary);
     line-height: 1.8;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.contact-email {
+    margin-top: 1.5rem;
+}
+
+.email-link {
+    display: inline-block;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--neon-green);
+    text-decoration: none;
+    padding: 1rem 2rem;
+    border: 2px solid var(--neon-green);
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.email-link:hover {
+    background: var(--neon-green);
+    color: var(--bg-dark);
+    box-shadow: var(--glow-green);
+    transform: translateY(-2px);
 }
 
 .contact-box {
