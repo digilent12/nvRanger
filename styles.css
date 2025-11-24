@@ -457,12 +457,26 @@ section {
     pointer-events: none;
 }
 
+.memorial-image {
+    margin: 2rem auto;
+    max-width: 500px;
+    text-align: center;
+}
+
+.memorial-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-lg);
+}
+
 .memorial-content {
     max-width: 800px;
     margin: 0 auto;
     text-align: center;
     position: relative;
-    z-index: 1;
+    z-index: 3;
 }
 
 .memorial-text {
@@ -717,7 +731,39 @@ section {
     line-height: 1.8;
 }
 
+.contact-box {
+    margin-top: 2rem;
+    padding: 1.5rem 2rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+}
 
+.contact-box:hover {
+    border-color: var(--neon-green);
+    box-shadow: var(--glow-green), var(--shadow-md);
+    transform: translateY(-3px);
+}
+
+.contact-box h3 {
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    font-size: 1.3rem;
+}
+
+.contact-box a {
+    color: var(--neon-green);
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.contact-box a:hover {
+    color: var(--text-primary);
+}
 
 
 /* Footer */
