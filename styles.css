@@ -169,6 +169,8 @@ body {
     pointer-events: none;
 }
 
+
+
 .hero-background::before {
     content: '';
     position: absolute;
@@ -182,6 +184,8 @@ body {
     z-index: 1;
 }
 
+
+
 .hero-background::after {
     content: '';
     position: absolute;
@@ -192,6 +196,33 @@ body {
     background: linear-gradient(to right, var(--bg-dark) 0%, rgba(10, 10, 10, 0.85) 40%, rgba(10, 10, 10, 0.5) 70%, transparent 100%);
     z-index: 2;
     pointer-events: none;
+}
+
+.coin-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;          /* Higher than .container (2) so it physically crosses over everything */
+    overflow: hidden;
+    pointer-events: none; /* Ensures mouse clicks pass right through the overlay */
+}
+
+.coin-decorative-image {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    opacity: 1;
+    filter: grayscale(0%) brightness(0.7) contrast(1.1);
+    transform: scale(1.05);
+    pointer-events: none;
+    
+    /* NOTE: 'screen' blend mode makes black pixels invisible. 
+       If your tape has dark details you want to see, change this to 'normal' or remove it. */
+    mix-blend-mode: screen; 
 }
 
 
